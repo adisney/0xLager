@@ -20,10 +20,11 @@ async function getCreatedContractAddresses(blockHeader) {
       return receipt.contractAddress;
     }
   });
-  return await Promise.all(results);
+  return (await Promise.all(results)).filter(Boolean);
 }
 
 async function subscribeToLogs(contractAddress, topicMap) {
+  console.log("Subscribing to events for contract at " + contractAddress);
   this.web3.eth.subscribe('logs', {
     address: contractAddress
   }, (error, result) => {
@@ -45,7 +46,34 @@ async function subscribeToLogs(contractAddress, topicMap) {
   });
 }
 
+function loadAbis(path) {
+  var topicMap = {};
+  var contractSpecFiles = fs.readdirSync(path);
+  contractSpecFiles.forEach((contractSpecFile, index) => {
+    if (contractSpecFile.includes(".json")) {
+      console.log("Loading abi from " + path + contractSpecFile);
+      var contractSpec = JSON.parse(fs.readFileSync(path+contractSpecFile));
+      var events = _.filter(contractSpec.abi, (elem) => {
+        return elem.type === "event";
+      });
+      _.reduce(events, (memo, eventAbi) => {
+        var signature = eventAbi.name + '(' + eventAbi.inputs.map(function(input) { return input.type; }).join(',') + ')';
+        var hash = this.web3.utils.sha3(signature);
+        memo[hash] = {
+          signature: signature,
+          hash: hash,
+          abi: eventAbi
+        };
+        return memo;
+      }, topicMap);
+    }
+  });
+  return topicMap;
+}
+
+
 exports.initWeb3 = initWeb3;
 exports.subscribeBlockHeaders = subscribeBlockHeaders;
 exports.getCreatedContractAddresses = getCreatedContractAddresses;
 exports.subscribeToLogs = subscribeToLogs;
+exports.loadAbis = loadAbis;
