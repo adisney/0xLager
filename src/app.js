@@ -71,9 +71,19 @@ function loadAbis(path) {
   return topicMap;
 }
 
+function subscribeAndListen() {
+  var subscription = this.subscribeBlockHeaders();
+  subscription.on("data", async (header) => {
+    var addresses = await this.getCreatedContractAddresses(header);
+    addresses.forEach((address) => {
+      this.subscribeToLogs(address, topicMap);
+    });
+  });
+}
 
 exports.initWeb3 = initWeb3;
 exports.subscribeBlockHeaders = subscribeBlockHeaders;
 exports.getCreatedContractAddresses = getCreatedContractAddresses;
 exports.subscribeToLogs = subscribeToLogs;
 exports.loadAbis = loadAbis;
+exports.subscribeAndListen = subscribeAndListen;
