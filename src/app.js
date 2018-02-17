@@ -12,8 +12,19 @@ function subscribeBlockHeaders() {
     return this.web3.eth.subscribe('newBlockHeaders');
 }
 
-async function getCreatedContractAddresses(blockHeader) {
-    var block = await this.web3.eth.getBlock(blockHeader.number, true);
+async function subscribeToExistingContractEvents(topicMap) {
+    var latestBlockNumber = await this.web3.eth.getBlockNumber();
+    console.log("Searching for contracts created on the blockchain up to height: " + latestBlockNumber);
+    for (var i=1; i <= latestBlockNumber; i++) {
+        var addresses = await this.getCreatedContractAddresses(i);
+        addresses.forEach((address) => {
+            this.subscribeToLogs(address, topicMap);
+        });
+    }
+}
+
+async function getCreatedContractAddresses(blockNumber) {
+    var block = await this.web3.eth.getBlock(blockNumber, true);
     var results = block.transactions.map(async (txn) => { 
         if (txn.to === null) {
             var receipt = await this.web3.eth.getTransactionReceipt(txn.hash);
@@ -71,10 +82,10 @@ function loadAbis(path) {
     return topicMap;
 }
 
-function subscribeAndListen() {
+function subscribeAndListen(topicMap) {
     var subscription = this.subscribeBlockHeaders();
     subscription.on("data", async (header) => {
-        var addresses = await this.getCreatedContractAddresses(header);
+        var addresses = await this.getCreatedContractAddresses(header.number);
         addresses.forEach((address) => {
             this.subscribeToLogs(address, topicMap);
         });
@@ -82,6 +93,7 @@ function subscribeAndListen() {
 }
 
 exports.initWeb3 = initWeb3;
+exports.subscribeToExistingContractEvents = subscribeToExistingContractEvents;
 exports.subscribeBlockHeaders = subscribeBlockHeaders;
 exports.getCreatedContractAddresses = getCreatedContractAddresses;
 exports.subscribeToLogs = subscribeToLogs;
