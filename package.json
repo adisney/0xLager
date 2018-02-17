@@ -1,0 +1,22 @@
+{
+  "name": "0xLager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine-node spec"
+  },
+  "keywords": [],
+  "author": "Alina Chu, Alex Disney",
+  "license": "MIT",
+  "devDependencies": {
+    "ganache-cli": "^6.1.0-beta.2",
+    "jasmine-node": "^1.14.5",
+    "mock-require": "^3.0.1",
+    "web3": "^1.0.0-beta.30"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adisney/0xLager"
+  },
+}
