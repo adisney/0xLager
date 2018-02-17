@@ -71,7 +71,7 @@ function loadAbis(path) {
   return topicMap;
 }
 
-function subscribeAndListen() {
+function subscribeAndListen(topicMap) {
   var subscription = this.subscribeBlockHeaders();
   subscription.on("data", async (header) => {
     var addresses = await this.getCreatedContractAddresses(header);

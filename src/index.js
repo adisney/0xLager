@@ -16,4 +16,4 @@ if (process.argv[5] != null) {
   app.subscribeToLogs(contractAddress, topicMap);
 }
 
-app.subscribeAndListen();
+app.subscribeAndListen(topicMap);
