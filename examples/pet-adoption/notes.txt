@@ -1,0 +1,6 @@
+HD Wallet
+==================
+Mnemonic:      room brother sibling obscure load polar viable bomb fix popular crazy toddler
+Base HD Path:  m/44'/60'/0'/0/{account_index}
+
+testnetQ7
