@@ -1,0 +1,1 @@
+find src/ spec/ -name "*.js" | entr -c -d sh -c 'jasmine-node spec'
