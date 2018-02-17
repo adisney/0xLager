@@ -24,7 +24,7 @@ async function getCreatedContractAddresses(blockHeader) {
 }
 
 async function subscribeToLogs(contractAddress, topicMap) {
-  web3.eth.subscribe('logs', {
+  this.web3.eth.subscribe('logs', {
     address: contractAddress
   }, (error, result) => {
     if (error) {
@@ -34,9 +34,9 @@ async function subscribeToLogs(contractAddress, topicMap) {
     var topic = result.topics[0];
     if (topic in topicMap) {
       var eventAbi = topicMap[topic].abi;
-      var decoded = web3.eth.abi.decodeLog(eventAbi.inputs, result.data, result.topics);
+      var decoded = this.web3.eth.abi.decodeLog(eventAbi.inputs, result.data, result.topics);
       var args = {};
-      _.reduce(eventAbi.inputs, (memo, input) => {
+      this.web3.utils._.reduce(eventAbi.inputs, (memo, input) => {
         args[input.name] = decoded[input.name];
         return memo;
       }, args);
