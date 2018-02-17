@@ -14,6 +14,7 @@ console.log(JSON.stringify(topicMap));
 if (process.argv[5] != null) {
   var contractAddress = process.argv[5];
   app.subscribeToLogs(contractAddress, topicMap);
+} else {
+  app.subscribeToExistingContractEvents(topicMap);
+  app.subscribeAndListen(topicMap);
 }
-
-app.subscribeAndListen(topicMap);
