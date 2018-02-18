@@ -1,4 +1,4 @@
-#Lager project
+# Lager project
 
 Logging command-line developer tool to find and stream contract creation events on a private test net, for debugging and analysis purposes. Uses truffle and ganache for test net.
 
