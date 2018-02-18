@@ -3,22 +3,33 @@ var Web3 = require('web3');
 var web3;
 var _ = require('lodash');
 var async = require('async');
+var topicMap;
 
 function initWeb3(host, port) {
     this.web3 = new Web3(new Web3.providers.WebsocketProvider("ws://" + host + ":" + port));
+    this.web3.currentProvider.connection.addEventListener('close', () => {
+        setTimeout(function(that, host, port) {
+            that.initWeb3(host, port);
+            that.subscribeToExistingContractEvents(topicMap);
+            that.subscribeAndListen(topicMap);
+        }, 500, this, host, port);
+    });
 }
 
 function subscribeBlockHeaders() {
-    return this.web3.eth.subscribe('newBlockHeaders');
+    var subscription = this.web3.eth.subscribe('newBlockHeaders');
+    subscription.on("error", (error) => {
+    });
+    return subscription;
 }
 
-async function subscribeToExistingContractEvents(topicMap) {
+async function subscribeToExistingContractEvents() {
     var latestBlockNumber = await this.web3.eth.getBlockNumber();
     console.log("Searching for contracts created on the blockchain up to height: " + latestBlockNumber);
     for (var i=1; i <= latestBlockNumber; i++) {
         var addresses = await this.getCreatedContractAddresses(i);
         addresses.forEach((address) => {
-            this.subscribeToLogs(address, topicMap);
+            this.subscribeToLogs(address);
         });
     }
 }
@@ -34,7 +45,7 @@ async function getCreatedContractAddresses(blockNumber) {
     return (await Promise.all(results)).filter(Boolean);
 }
 
-async function subscribeToLogs(contractAddress, topicMap) {
+async function subscribeToLogs(contractAddress) {
     console.log("Subscribing to events for contract at " + contractAddress);
     this.web3.eth.subscribe('logs', {
         address: contractAddress
@@ -44,8 +55,8 @@ async function subscribeToLogs(contractAddress, topicMap) {
             return;
         }
         var topic = result.topics[0];
-        if (topic in topicMap) {
-            var eventAbi = topicMap[topic].abi;
+        if (topic in this.topicMap) {
+            var eventAbi = this.topicMap[topic].abi;
             var decoded = this.web3.eth.abi.decodeLog(eventAbi.inputs, result.data, result.topics);
             var args = {};
             this.web3.utils._.reduce(eventAbi.inputs, (memo, input) => {
@@ -79,15 +90,15 @@ function loadAbis(path) {
             }, topicMap);
         }
     });
-    return topicMap;
+    this.topicMap = topicMap;
 }
 
-function subscribeAndListen(topicMap) {
+function subscribeAndListen() {
     var subscription = this.subscribeBlockHeaders();
     subscription.on("data", async (header) => {
         var addresses = await this.getCreatedContractAddresses(header.number);
         addresses.forEach((address) => {
-            this.subscribeToLogs(address, topicMap);
+            this.subscribeToLogs(address);
         });
     });
 }

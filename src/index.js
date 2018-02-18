@@ -6,15 +6,14 @@ var port = process.argv[3];
 var path = process.argv[4];
 
 app.initWeb3(host, port);
-
-var topicMap = app.loadAbis(path);
-console.log(JSON.stringify(topicMap));
+app.loadAbis(path);
+console.log(JSON.stringify(app.topicMap));
 
 // Cryptokitties '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d'
 if (process.argv[5] != null) {
   var contractAddress = process.argv[5];
-  app.subscribeToLogs(contractAddress, topicMap);
+  app.subscribeToLogs(contractAddress);
 } else {
-  app.subscribeToExistingContractEvents(topicMap);
-  app.subscribeAndListen(topicMap);
+  app.subscribeToExistingContractEvents();
+  app.subscribeAndListen();
 }
