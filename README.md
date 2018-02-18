@@ -2,13 +2,13 @@ Lager project
 
 Logging command-line developer tool to find and stream contract creation events on a private test net, for debugging and analysis purposes. Uses truffle and ganache for test net.
 
-`examples/pet-adoption` contains an example adapted from http://truffleframework.com/tutorials/pet-shop
+"examples/pet-adoption" contains an example adapted from http://truffleframework.com/tutorials/pet-shop
 
 Installation:
 ```
 > npm install adisney/0xLager  //use the -g flag if you want it available for all projects, otherwise install inside your dev project folder.
 ```
-Usage: `0xLager <host> <port> <path to abi files>`
+Usage: 0xLager <host> <port> <path to abi files>
 ```
 > 0xLager "127.0.0.1" "8545" "/usr/local/bin/0xLager/examples/pet-adoption/build/contracts/"
 ```
