@@ -4,7 +4,17 @@ Logging command-line developer tool to find and stream contract creation events 
 
 `examples/pet-adoption` contains an example adapted from http://truffleframework.com/tutorials/pet-shop
 
-Sample usage. Sub out pet-adoption project for your project.
+Installation:
+```
+> npm install adisney/0xLager  //use the -g flag if you want it available for all projects, otherwise install inside your dev project folder.
+```
+Usage: `0xLager <host> <port> <path to abi files>`
+```
+> 0xLager "127.0.0.1" "8545" "/usr/local/bin/0xLager/examples/pet-adoption/build/contracts/"
+```
+-----
+
+Example. Sub out pet-adoption project for your project.
 
 Set up testnet:
 
@@ -19,12 +29,12 @@ migrate the test
 0xLager/examples/pet-adoption
 > truffle migrate
 ```
+run the lager with localhost port, node, and full path to the abi files.
 
-run the lager with localhost port, node, and full path to the abi files:
 ```
 > pwd
 0xLager
-> node src/index.js "127.0.0.1" "8545" "./examples/pet-adoption/build/contracts/"
+> 0xLager "127.0.0.1" "8545" "./examples/pet-adoption/build/contracts/"
 ```
 or
 ```
@@ -49,8 +59,8 @@ or with metamask configured (set to your private test net):
 ```
 click on a Adopt button, accept the metamask transaction.
 See the events.
-Note that you can kill ganache (your test net) and bring it back up, and leave lager running.
 
+Note that you can kill ganache (your test net) and bring it back up, and leave lager running.  The connection will fail but will start filtering for contract creation events again when ganache is restarted.
 
 
 Common problems:
