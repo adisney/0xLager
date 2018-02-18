@@ -24,7 +24,11 @@ run the lager with localhost port, node, and full path to the abi files:
 ```
 > pwd
 0xLager
-> node src/index.js "127.0.0.1" "8545" "0xLager/examples/pet-adopton/build/contracts/"
+> node src/index.js "127.0.0.1" "8545" "./examples/pet-adoption/build/contracts/"
+```
+or
+```
+> npm run demo
 ```
 see the contracts being gathered, something like:
 ```
@@ -45,6 +49,8 @@ or with metamask configured (set to your private test net):
 ```
 click on a Adopt button, accept the metamask transaction.
 See the events.
+Note that you can kill ganache (your test net) and bring it back up, and leave lager running.
+
 
 
 Common problems:
