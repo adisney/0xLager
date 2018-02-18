@@ -8,6 +8,9 @@
     "start": "node src/index.js",
     "demo": "node src/index.js '127.0.0.1' '8545' './examples/pet-adoption/build/contracts/'"
   },
+  "bin": {
+    "0xLager": "./src/index.js"
+  },
   "keywords": [],
   "author": "Alina Chu, Alex Disney",
   "license": "MIT",
