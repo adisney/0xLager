@@ -11,7 +11,7 @@ Set up testnet:
 ```
 > pwd
 0xLager/examples/pet-adoption
-> ganache-cli  //or to open up the same ganache session: ganache-cli -m "12-word menomic"
+> ganache-cli  //or to open up the same ganache session add your 12 word mnemonic: ganache-cli -m "rug caught van employ flush harbor lunar wool before coach eagle axe"
 ```
 migrate the test
 ```
