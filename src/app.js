@@ -2,7 +2,6 @@ var fs = require('fs');
 var Web3 = require('web3');
 var web3;
 var _ = require('lodash');
-var async = require('async');
 var topicMap;
 
 function initWeb3(host, port, onopen) {
