@@ -2,7 +2,8 @@
 
 Logging command-line developer tool to find and stream contract creation events on a private test net, for debugging and analysis purposes. Uses truffle and ganache for test net.
 
-"examples/pet-adoption" contains an example adapted from http://truffleframework.com/tutorials/pet-shop
+"examples/pet-adoption" contains an example adapted from 
+http://truffleframework.com/tutorials/pet-shop
 
 Installation:
 ```
