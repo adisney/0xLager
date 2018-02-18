@@ -5,14 +5,20 @@ var _ = require('lodash');
 var async = require('async');
 var topicMap;
 
-function initWeb3(host, port) {
-    this.web3 = new Web3(new Web3.providers.WebsocketProvider("ws://" + host + ":" + port));
+function initWeb3(host, port, onopen) {
+    var provider = new Web3.providers.WebsocketProvider("ws://" + host + ":" + port);
+    provider
+    if (onopen) {
+        provider.on('connect', onopen);
+    }
+    this.web3 = new Web3(provider);
     this.web3.currentProvider.connection.addEventListener('close', () => {
-        setTimeout(function(that, host, port) {
-            that.initWeb3(host, port);
-            that.subscribeToExistingContractEvents(topicMap);
-            that.subscribeAndListen(topicMap);
-        }, 500, this, host, port);
+        setTimeout(function(that, host, port, onopen) {
+            that.initWeb3(host, port, onopen);
+        }, 500, this, host, port, () => {
+            this.subscribeToExistingContractEvents(topicMap);
+            this.subscribeAndListen(topicMap);
+        });
     });
 }
 
@@ -51,7 +57,6 @@ async function subscribeToLogs(contractAddress) {
         address: contractAddress
     }, (error, result) => {
         if (error) {
-            console.log("There was an error: " + error);
             return;
         }
         var topic = result.topics[0];
