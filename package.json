@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine-node --watch src --verbose --autoTest spec"
+    "test": "jasmine-node --watch src --verbose --autoTest spec",
+    "start": "node src/index.js",
+    "demo": "node src/index.js '127.0.0.1' '8545' './examples/pet-adoption/build/contracts/'"
   },
   "keywords": [],
   "author": "Alina Chu, Alex Disney",
